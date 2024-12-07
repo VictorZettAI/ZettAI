@@ -2,7 +2,7 @@ import { useState, useEffect, lazy, Suspense } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
 import Header from './components/Header'
 import { Hero } from './components/Hero'
-import { Footer } from './components/Footer'
+import Footer from './components/Footer'
 import { Chatbot } from './components/Chatbot'
 import { ArrowUp } from 'lucide-react'
 import { Button } from './components/ui/button'
@@ -24,103 +24,56 @@ const LoadingFallback = () => (
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const savedMode = localStorage.getItem('darkMode')
-      return savedMode ? JSON.parse(savedMode) : window.matchMedia('(prefers-color-scheme: dark)').matches
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-  })
   const [showScrollTop, setShowScrollTop] = useState(false)
   const { scrollYProgress } = useScroll()
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode))
-    
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark')
-      document.body.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      document.body.classList.remove('dark')
-    }
-  }, [isDarkMode])
-
-  useEffect(() => {
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400)
+      setShowScrollTop(window.scrollY > 500)
     }
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  const toggleDarkMode = () => setIsDarkMode(!isDarkMode)
-
   return (
     <HelmetProvider>
-      <div className="w-full min-h-screen">
-        <div className={`w-full min-h-screen flex flex-col items-stretch ${isDarkMode ? 'bg-[#0b1120] text-white' : 'bg-white text-gray-900'}`}>
-          <Header 
-            isMenuOpen={isMenuOpen}
-            setIsMenuOpen={setIsMenuOpen}
-            isDarkMode={isDarkMode}
-            toggleDarkMode={toggleDarkMode}
-          />
-          
-          <main className="w-full flex-1">
-            {/* Hero - Carga inmediata para mejor First Contentful Paint */}
-            <Hero isDarkMode={isDarkMode} />
-            
-            {/* Lazy load del resto de secciones */}
-            <Suspense fallback={<LoadingFallback />}>
-              {/* Servicios - Qué ofrecemos */}
-              <Services isDarkMode={isDarkMode} />
-              
-              {/* Demo Section */}
-              <DemoSection isDarkMode={isDarkMode} />
-              
-              {/* Casos de Éxito - Prueba social */}
-              <CaseStudies isDarkMode={isDarkMode} />
-              
-              {/* Equipo - Generar confianza */}
-              <Team isDarkMode={isDarkMode} />
-              
-              {/* Contacto - Llamada a la acción principal */}
-              <Contact isDarkMode={isDarkMode} />
-            </Suspense>
-          </main>
-          
-          <Footer isDarkMode={isDarkMode} />
-        </div>
+      <div className="min-h-screen bg-[#070914] text-white">
+        <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         
-        <Chatbot isDarkMode={isDarkMode} />
-        
+        <main>
+          <Hero />
+          <Suspense fallback={<LoadingFallback />}>
+            <Services />
+            <CaseStudies />
+            <DemoSection />
+            <Team />
+            <Contact />
+          </Suspense>
+        </main>
+
+        <Footer />
+        <Chatbot />
+
         {/* Scroll to top button */}
-        {showScrollTop && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            className="fixed bottom-24 md:bottom-8 right-8 z-10"
-          >
-            <Button
-              variant="outline"
-              size="icon"
-              className={`rounded-full shadow-lg ${
-                isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'
-              }`}
-              onClick={scrollToTop}
+        <motion.div
+          style={{ opacity }}
+          className="fixed bottom-8 right-8 z-50"
+        >
+          {showScrollTop && (
+            <motion.button
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="p-3 rounded-full bg-yellow-500 text-gray-900 shadow-lg hover:bg-yellow-400 transition-colors"
             >
-              <ArrowUp className="h-4 w-4" />
-            </Button>
-          </motion.div>
-        )}
+              <ArrowUp className="w-6 h-6" />
+            </motion.button>
+          )}
+        </motion.div>
       </div>
     </HelmetProvider>
   )

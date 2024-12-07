@@ -1,189 +1,178 @@
-import { motion } from 'framer-motion'
-import { Play, Code, Zap, BarChart } from 'lucide-react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Play, CheckCircle, ArrowRight } from 'lucide-react'
+import { useRef, useState } from 'react'
 
 interface DemoSectionProps {
-  isDarkMode: boolean
 }
 
 const features = [
   {
-    icon: Code,
-    title: 'Desarrollo Inteligente',
-    description: 'IA que entiende tu código y sugiere mejoras en tiempo real'
-  },
-  {
-    icon: Zap,
-    title: 'Automatización Avanzada',
-    description: 'Automatiza tareas repetitivas y optimiza tu flujo de trabajo'
-  },
-  {
-    icon: BarChart,
     title: 'Análisis Predictivo',
-    description: 'Anticipa tendencias y toma decisiones basadas en datos'
+    description: 'Anticipa tendencias y comportamientos con precisión utilizando modelos avanzados de machine learning.',
+    benefits: [
+      'Predicciones precisas en tiempo real',
+      'Modelos adaptativos auto-optimizados',
+      'Visualización intuitiva de resultados'
+    ]
+  },
+  {
+    title: 'Automatización Inteligente',
+    description: 'Optimiza procesos empresariales con automatización basada en IA que aprende y mejora continuamente.',
+    benefits: [
+      'Reducción significativa de tareas manuales',
+      'Mejora continua del rendimiento',
+      'Integración perfecta con sistemas existentes'
+    ]
+  },
+  {
+    title: 'Insights Accionables',
+    description: 'Convierte datos complejos en insights claros y accionables para tomar mejores decisiones.',
+    benefits: [
+      'Dashboards personalizables en tiempo real',
+      'Alertas inteligentes automatizadas',
+      'Reportes detallados bajo demanda'
+    ]
   }
 ]
 
-export default function DemoSection({ isDarkMode }: DemoSectionProps) {
-  return (
-    <section id="demo" className={`py-24 relative overflow-hidden ${
-      isDarkMode ? 'bg-[#0B1120]' : 'bg-gray-50'
-    }`}>
-      {/* Background gradient */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0" 
-          style={{
-            backgroundImage: isDarkMode 
-              ? 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.08) 0%, rgba(11, 17, 32, 0) 50%)'
-              : 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.12) 0%, rgba(255, 255, 255, 0) 50%)'
-          }}
-        />
-      </div>
+export default function DemoSection() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
 
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Demo Video/Image Section */}
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100])
+
+  const handlePlayClick = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause()
+      } else {
+        videoRef.current.play()
+      }
+      setIsPlaying(!isPlaying)
+    }
+  }
+
+  return (
+    <section 
+      ref={containerRef}
+      id="demo" 
+      className="py-24 relative overflow-hidden bg-[#0B1120]"
+    >
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-3xl mx-auto mb-20"
+        >
+          <h2 className="text-4xl font-bold mb-8 text-white">
+            Ve ZettAI en Acción
+          </h2>
+          <p className="text-xl leading-relaxed text-gray-300">
+            Descubre cómo nuestra plataforma transforma datos en resultados tangibles
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
+          {/* Video Demo */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8 }}
+            className="relative rounded-2xl overflow-hidden shadow-2xl"
           >
-            <div className={`relative rounded-2xl overflow-hidden ${
-              isDarkMode ? 'bg-gray-800/50' : 'bg-white'
-            } shadow-xl`}>
-              <div className="aspect-w-16 aspect-h-9">
-                <video
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  poster="/demo-poster.jpg"
-                >
-                  <source src="/demo-video.mp4" type="video/mp4" />
-                </video>
-                <div className={`absolute inset-0 ${
-                  isDarkMode 
-                    ? 'bg-gradient-to-r from-gray-900/20 to-transparent'
-                    : 'bg-gradient-to-r from-white/20 to-transparent'
-                }`} />
-              </div>
+            <div className="aspect-video relative">
+              <video
+                ref={videoRef}
+                className="w-full h-full object-cover"
+                poster="/demo-poster.jpg"
+                onEnded={() => setIsPlaying(false)}
+              >
+                <source src="/demo-video.mp4" type="video/mp4" />
+                Tu navegador no soporta el elemento de video.
+              </video>
+              
               <motion.button
+                onClick={handlePlayClick}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-                  w-16 h-16 rounded-full flex items-center justify-center
-                  ${isDarkMode ? 'bg-yellow-500' : 'bg-yellow-500'} 
-                  text-white shadow-lg`}
+                className={`absolute inset-0 flex items-center justify-center ${
+                  isPlaying ? 'bg-black/0' : 'bg-black/40'
+                } transition-colors duration-300`}
               >
-                <Play className="w-8 h-8" />
+                {!isPlaying && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className={`w-20 h-20 rounded-full flex items-center justify-center bg-yellow-500 text-white`}
+                  >
+                    <Play className="w-8 h-8 ml-1" />
+                  </motion.div>
+                )}
               </motion.button>
             </div>
           </motion.div>
 
-          {/* Features Section */}
+          {/* Features List */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            <div>
-              <h2 className={`text-4xl font-bold mb-6 ${
-                isDarkMode ? 'text-white' : 'text-gray-900'
-              }`}>
-                Experimenta el Poder de la IA
-              </h2>
-              <p className={`text-xl ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                Descubre cómo nuestra tecnología puede transformar tu forma de trabajar
-              </p>
-            </div>
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                className="p-6 rounded-xl bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50 transition-colors duration-300"
+              >
+                <h3 className="text-xl font-bold mb-3 text-white">
+                  {feature.title}
+                </h3>
+                <p className="text-sm mb-4 text-gray-400">
+                  {feature.description}
+                </p>
+                <ul className="space-y-2">
+                  {feature.benefits.map((benefit, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.2 + i * 0.1 }}
+                      className="flex items-start space-x-2"
+                    >
+                      <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-yellow-500" />
+                      <span className="text-sm text-gray-300">
+                        {benefit}
+                      </span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
 
-            <div className="space-y-6">
-              {features.map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ 
-                    duration: 0.5,
-                    delay: index * 0.1
-                  }}
-                >
-                  <div className={`p-6 rounded-xl ${
-                    isDarkMode 
-                      ? 'bg-gray-800/50 hover:bg-gray-800/70' 
-                      : 'bg-white hover:bg-gray-50'
-                    } transition-colors duration-200`}
-                  >
-                    <div className="flex items-start space-x-4">
-                      <div className={`p-3 rounded-lg ${
-                        isDarkMode ? 'bg-gray-700/50' : 'bg-gray-100'
-                      }`}>
-                        <feature.icon className={`w-6 h-6 ${
-                          isDarkMode ? 'text-yellow-500' : 'text-yellow-600'
-                        }`} />
-                      </div>
-                      <div>
-                        <h3 className={`text-lg font-semibold mb-2 ${
-                          isDarkMode ? 'text-white' : 'text-gray-900'
-                        }`}>
-                          {feature.title}
-                        </h3>
-                        <p className={`${
-                          isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                        }`}>
-                          {feature.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            <motion.button
+              whileHover={{ x: 5 }}
+              className={`mt-8 inline-flex items-center px-6 py-3 rounded-lg text-sm font-medium transition-colors bg-yellow-500 hover:bg-yellow-400 text-gray-900`}
+            >
+              Solicitar Demo Personalizada
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </motion.button>
           </motion.div>
         </div>
-
-        {/* Floating decorative elements */}
-        <motion.div
-          animate={{ 
-            y: [0, -30, 0],
-            rotate: [0, -5, 0]
-          }}
-          transition={{ 
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-20 left-10 w-40 h-40 opacity-20"
-          style={{
-            background: isDarkMode 
-              ? 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.2), transparent)'
-              : 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.3), transparent)'
-          }}
-        />
-        <motion.div
-          animate={{ 
-            y: [0, 30, 0],
-            rotate: [0, 5, 0]
-          }}
-          transition={{ 
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-          className="absolute bottom-20 right-10 w-32 h-32 opacity-20"
-          style={{
-            background: isDarkMode 
-              ? 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.2), transparent)'
-              : 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.3), transparent)'
-          }}
-        />
       </div>
     </section>
   )

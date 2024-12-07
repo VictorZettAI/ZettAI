@@ -1,194 +1,156 @@
 import { motion } from 'framer-motion'
-import { Brain, Bot, Database, LineChart, Lock, Zap, ArrowRight } from 'lucide-react'
-import { Card, CardHeader, CardTitle, CardDescription } from './ui/card'
+import { Brain, Bot, Database, Cpu, LineChart, Lock } from 'lucide-react'
+import { useInView } from 'react-intersection-observer'
 
-interface ServicesProps {
-  isDarkMode: boolean
+interface ServiceCardProps {
+  title: string
+  description: string
+  Icon: any
+  delay: number
 }
 
 const services = [
   {
-    title: 'Machine Learning',
-    description: 'Modelos de IA personalizados para tu negocio',
-    icon: Brain
+    title: "Machine Learning Avanzado",
+    description: "Implementamos soluciones de ML personalizadas para optimizar sus procesos empresariales y toma de decisiones.",
+    Icon: Brain
   },
   {
-    title: 'Chatbots IA',
-    description: 'Asistentes virtuales inteligentes 24/7',
-    icon: Bot
+    title: "Chatbots Inteligentes",
+    description: "Desarrollamos asistentes virtuales con IA que mejoran la experiencia del cliente y automatizan el soporte.",
+    Icon: Bot
   },
   {
-    title: 'Análisis de Datos',
-    description: 'Insights accionables para tu empresa',
-    icon: LineChart
+    title: "Big Data Analytics",
+    description: "Transformamos grandes volúmenes de datos en insights accionables para su negocio.",
+    Icon: Database
   },
   {
-    title: 'Big Data',
-    description: 'Procesamiento de datos a gran escala',
-    icon: Database
+    title: "Automatización IA",
+    description: "Optimizamos sus operaciones mediante la automatización inteligente de procesos repetitivos.",
+    Icon: Cpu
   },
   {
-    title: 'IA Segura',
-    description: 'Máxima seguridad y privacidad',
-    icon: Lock
+    title: "Análisis Predictivo",
+    description: "Anticipamos tendencias y comportamientos para una toma de decisiones más informada.",
+    Icon: LineChart
   },
   {
-    title: 'Automatización',
-    description: 'Optimización de procesos con IA',
-    icon: Zap
+    title: "IA Segura y Ética",
+    description: "Implementamos soluciones de IA con los más altos estándares de seguridad y ética.",
+    Icon: Lock
   }
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-}
+const ServiceCard = ({ title, description, Icon, delay }: ServiceCardProps) => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.2
+  })
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.4
-    }
-  }
-}
-
-export default function Services({ isDarkMode }: ServicesProps) {
   return (
-    <section id="servicios" className={`pt-24 pb-32 relative overflow-hidden ${
-      isDarkMode ? 'bg-[#0B1120]' : 'bg-white'
-    }`}>
-      {/* Background gradient */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0" 
-          style={{
-            backgroundImage: isDarkMode 
-              ? 'radial-gradient(circle at 50% 0%, rgba(234, 179, 8, 0.08) 0%, rgba(11, 17, 32, 0) 50%)'
-              : 'radial-gradient(circle at 50% 0%, rgba(234, 179, 8, 0.12) 0%, rgba(255, 255, 255, 0) 50%)'
-          }}
-        />
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.5, delay: delay * 0.1 }}
+      className="group relative p-8 rounded-2xl transition-all duration-300 bg-gray-800/50 hover:bg-gray-800/80 hover:shadow-xl"
+    >
+      <div className="flex items-center space-x-4 mb-4">
+        <motion.div
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          className="p-3 rounded-xl bg-yellow-500/10 text-yellow-500"
+        >
+          <Icon className="w-6 h-6" />
+        </motion.div>
+        <h3 className="text-xl font-bold text-white">
+          {title}
+        </h3>
       </div>
+      
+      <p className="text-sm leading-relaxed text-gray-400">
+        {description}
+      </p>
 
-      <div className="container mx-auto px-4">
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-1 bg-yellow-500 origin-left scale-x-0 transition-transform group-hover:scale-x-100"
+        initial={false}
+      />
+    </motion.div>
+  )
+}
+
+export default function Services() {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1
+  })
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  }
+
+  return (
+    <section 
+      id="servicios"
+      ref={ref}
+      className="py-24 relative overflow-hidden bg-[#0B1120]"
+    >
+      {/* Animated gradient background */}
+      <motion.div 
+        className="absolute inset-0 -z-10 opacity-30"
+        animate={{
+          background: [
+            'radial-gradient(circle at 0% 0%, rgba(234, 179, 8, 0.15) 0%, rgba(11, 17, 32, 0) 50%)',
+            'radial-gradient(circle at 100% 100%, rgba(234, 179, 8, 0.15) 0%, rgba(11, 17, 32, 0) 50%)',
+            'radial-gradient(circle at 0% 100%, rgba(234, 179, 8, 0.15) 0%, rgba(11, 17, 32, 0) 50%)',
+            'radial-gradient(circle at 100% 0%, rgba(234, 179, 8, 0.15) 0%, rgba(11, 17, 32, 0) 50%)',
+            'radial-gradient(circle at 0% 0%, rgba(234, 179, 8, 0.15) 0%, rgba(11, 17, 32, 0) 50%)',
+          ]
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+      />
+
+      <div className="container mx-auto px-6 relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center max-w-3xl mx-auto mb-20"
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
         >
-          <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${
-            isDarkMode ? 'text-white' : 'text-gray-900'
-          }`}>
-            Soluciones Inteligentes para tu Empresa
+          <h2 className="text-4xl font-bold mb-4 text-white">
+            Nuestros Servicios
           </h2>
-          <p className={`text-xl ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-600'
-          }`}>
-            Descubre cómo la IA puede transformar cada aspecto de tu negocio
+          <p className="text-lg max-w-2xl mx-auto text-gray-400">
+            Transformamos su negocio con soluciones de IA innovadoras y personalizadas
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {services.map((service, index) => (
-            <motion.div
+            <ServiceCard
               key={service.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ 
-                duration: 0.8, 
-                delay: index * 0.1,
-                ease: [0.22, 1, 0.36, 1]
-              }}
-            >
-              <motion.div
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-                className={`h-full p-8 rounded-2xl backdrop-blur-sm ${
-                  isDarkMode 
-                    ? 'bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50' 
-                    : 'bg-white/50 hover:bg-white border border-gray-200/50'
-                } shadow-lg hover:shadow-xl transition-all duration-300`}
-              >
-                <div className={`w-14 h-14 rounded-xl mb-6 flex items-center justify-center ${
-                  isDarkMode ? 'bg-gray-700/50' : 'bg-gray-100/50'
-                }`}>
-                  <service.icon className={`w-7 h-7 ${
-                    isDarkMode ? 'text-yellow-500' : 'text-yellow-600'
-                  }`} />
-                </div>
-                
-                <h3 className={`text-xl font-semibold mb-4 ${
-                  isDarkMode ? 'text-white' : 'text-gray-900'
-                }`}>
-                  {service.title}
-                </h3>
-                
-                <p className={`mb-6 ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  {service.description}
-                </p>
-
-                <motion.div
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                  className={`flex items-center text-sm font-medium ${
-                    isDarkMode ? 'text-yellow-500' : 'text-yellow-600'
-                  }`}
-                >
-                  Saber más
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </motion.div>
-              </motion.div>
-            </motion.div>
+              {...service}
+              delay={index}
+            />
           ))}
-        </div>
-
-        {/* Floating decorative elements */}
-        <motion.div
-          animate={{ 
-            y: [0, -30, 0],
-            rotate: [0, -5, 0]
-          }}
-          transition={{ 
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute top-20 left-10 w-40 h-40 opacity-20"
-          style={{
-            background: isDarkMode 
-              ? 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.2), transparent)'
-              : 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.3), transparent)'
-          }}
-        />
-        <motion.div
-          animate={{ 
-            y: [0, 30, 0],
-            rotate: [0, 5, 0]
-          }}
-          transition={{ 
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-          className="absolute bottom-20 right-10 w-32 h-32 opacity-20"
-          style={{
-            background: isDarkMode 
-              ? 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.2), transparent)'
-              : 'radial-gradient(circle at 50% 50%, rgba(234, 179, 8, 0.3), transparent)'
-          }}
-        />
+        </motion.div>
       </div>
     </section>
   )
