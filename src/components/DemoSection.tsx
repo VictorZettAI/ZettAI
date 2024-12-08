@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Play, CheckCircle, ArrowRight } from 'lucide-react'
 import { useRef, useState } from 'react'
+import trianglePortal from '../assets/triangle-portal.jpg'
 
 interface DemoSectionProps {
 }
@@ -37,7 +38,6 @@ const features = [
 
 export default function DemoSection() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   
   const { scrollYProgress } = useScroll({
@@ -48,77 +48,88 @@ export default function DemoSection() {
   const y = useTransform(scrollYProgress, [0, 1], [100, -100])
 
   const handlePlayClick = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause()
-      } else {
-        videoRef.current.play()
-      }
-      setIsPlaying(!isPlaying)
-    }
+    setIsPlaying(!isPlaying)
   }
 
   return (
     <section 
       ref={containerRef}
       id="demo" 
-      className="py-24 relative overflow-hidden bg-[#0B1120]"
+      className="py-32 relative overflow-hidden bg-black"
     >
-      <div className="container mx-auto px-6">
+      <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 via-transparent to-transparent opacity-50" />
+      
+      <div className="container mx-auto px-6 relative">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-3xl mx-auto mb-20"
+          className="text-center max-w-3xl mx-auto mb-24"
         >
-          <h2 className="text-4xl font-bold mb-8 text-white">
-            Ve ZettAI en Acción
-          </h2>
-          <p className="text-xl leading-relaxed text-gray-300">
-            Descubre cómo nuestra plataforma transforma datos en resultados tangibles
-          </p>
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="inline-block text-sm font-medium text-amber-200/80 uppercase tracking-wider mb-4"
+          >
+            Experiencia en acción
+          </motion.span>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-6xl font-bold mb-6 text-white"
+          >
+            Descubre el Poder
+            <br />
+            de la IA
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="text-xl leading-relaxed text-gray-400 max-w-2xl mx-auto"
+          >
+            Explora cómo nuestra plataforma transforma datos complejos en soluciones 
+            inteligentes y resultados tangibles para tu negocio
+          </motion.p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
           {/* Video Demo */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative rounded-2xl overflow-hidden shadow-2xl"
+            className="relative rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] bg-gradient-to-br from-amber-500/10 to-transparent p-1"
           >
-            <div className="aspect-video relative">
-              <video
-                ref={videoRef}
+            <div className="aspect-video relative rounded-xl overflow-hidden">
+              <img
+                src={trianglePortal}
+                alt="Portal triangular brillante"
                 className="w-full h-full object-cover"
-                poster="/demo-poster.jpg"
-                onEnded={() => setIsPlaying(false)}
-              >
-                <source src="/demo-video.mp4" type="video/mp4" />
-                Tu navegador no soporta el elemento de video.
-              </video>
-              
-              <motion.button
-                onClick={handlePlayClick}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className={`absolute inset-0 flex items-center justify-center ${
-                  isPlaying ? 'bg-black/0' : 'bg-black/40'
-                } transition-colors duration-300`}
-              >
-                {!isPlaying && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className={`w-20 h-20 rounded-full flex items-center justify-center bg-yellow-500 text-white`}
-                  >
-                    <Play className="w-8 h-8 ml-1" />
-                  </motion.div>
-                )}
-              </motion.button>
+              />
             </div>
+            
+            <motion.button
+              onClick={handlePlayClick}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`absolute inset-0 flex items-center justify-center bg-black/40 transition-colors duration-300`}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="w-20 h-20 rounded-full flex items-center justify-center bg-amber-500 text-white shadow-lg backdrop-blur-sm"
+              >
+                <Play className="w-8 h-8 ml-1" />
+              </motion.div>
+            </motion.button>
           </motion.div>
 
           {/* Features List */}
@@ -136,9 +147,9 @@ export default function DemoSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
-                className="p-6 rounded-xl bg-gray-800/50 hover:bg-gray-800/70 border border-gray-700/50 transition-colors duration-300"
+                className="p-6 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 transition-all duration-300 group"
               >
-                <h3 className="text-xl font-bold mb-3 text-white">
+                <h3 className="text-xl font-bold mb-3 text-white group-hover:text-amber-200 transition-colors">
                   {feature.title}
                 </h3>
                 <p className="text-sm mb-4 text-gray-400">
@@ -154,7 +165,7 @@ export default function DemoSection() {
                       transition={{ delay: index * 0.2 + i * 0.1 }}
                       className="flex items-start space-x-2"
                     >
-                      <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-yellow-500" />
+                      <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0 text-amber-500" />
                       <span className="text-sm text-gray-300">
                         {benefit}
                       </span>
@@ -166,7 +177,7 @@ export default function DemoSection() {
 
             <motion.button
               whileHover={{ x: 5 }}
-              className={`mt-8 inline-flex items-center px-6 py-3 rounded-lg text-sm font-medium transition-colors bg-yellow-500 hover:bg-yellow-400 text-gray-900`}
+              className="mt-8 inline-flex items-center px-6 py-3 rounded-lg text-sm font-medium bg-amber-500 hover:bg-amber-400 text-gray-900 transition-colors shadow-lg shadow-amber-500/20"
             >
               Solicitar Demo Personalizada
               <ArrowRight className="w-4 h-4 ml-2" />

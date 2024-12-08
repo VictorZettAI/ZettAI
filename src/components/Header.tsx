@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import zettaiLogo from '../assets/zettai-logo.png'
 
 interface HeaderProps {
   isMenuOpen: boolean
@@ -98,21 +99,21 @@ export default function Header({ isMenuOpen, setIsMenuOpen }: HeaderProps) {
       <nav className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ 
-              type: "spring",
-              stiffness: 100,
-              damping: 20
-            }}
+          <motion.a
+            href="/"
+            className="flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
-            className="flex-shrink-0"
+            whileTap={{ scale: 0.95 }}
           >
-            <a href="#" className="text-2xl font-bold text-white">
-              ZettAI
-            </a>
-          </motion.div>
+            <div className="relative flex items-center">
+              <div className="absolute pt-4 -left-">
+                <img src={zettaiLogo} alt="ZettAI Logo" className="h-32 w-auto" />
+              </div>
+              <span className="text-2xl font-bold ml-32">
+                Zett<span className="text-amber-500">AI</span>
+              </span>
+            </div>
+          </motion.a>
 
           {/* Desktop Navigation */}
           <motion.div 

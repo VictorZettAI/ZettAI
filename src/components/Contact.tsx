@@ -96,7 +96,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contacto" className="py-24 relative overflow-hidden bg-[#0B1120]">
+    <section id="contacto" className="py-32 relative overflow-hidden bg-[#0B1120]">
       {/* Animated gradient background */}
       <motion.div 
         className="absolute inset-0 -z-10 opacity-30"
@@ -116,7 +116,7 @@ export default function Contact() {
         }}
       />
 
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-6 max-w-7xl">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -131,8 +131,25 @@ export default function Contact() {
               }
             }
           }}
-          className="text-center max-w-3xl mx-auto mb-20"
+          className="text-center max-w-3xl mx-auto mb-24"
         >
+          <motion.span
+            variants={{
+              hidden: { y: 20, opacity: 0 },
+              visible: {
+                y: 0,
+                opacity: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15
+                }
+              }
+            }}
+            className="inline-block text-sm font-medium text-amber-200/80 uppercase tracking-wider mb-4"
+          >
+            Hablemos de tu proyecto
+          </motion.span>
           <motion.h2 
             variants={{
               hidden: { y: 20, opacity: 0 },
@@ -146,9 +163,11 @@ export default function Contact() {
                 }
               }
             }}
-            className="text-4xl font-bold mb-6 text-white"
+            className="text-6xl font-bold mb-6 text-white"
           >
-            Contacta con Nosotros
+            ¿Tienes un Proyecto
+            <br />
+            en Mente?
           </motion.h2>
           <motion.p 
             variants={{
@@ -163,9 +182,10 @@ export default function Contact() {
                 }
               }
             }}
-            className="text-xl text-gray-300"
+            className="text-xl leading-relaxed text-gray-400 max-w-2xl mx-auto"
           >
-            Estamos aquí para ayudarte a transformar tu negocio con IA
+            Cuéntanos sobre tu visión y descubre cómo podemos ayudarte a 
+            transformar tu negocio con IA
           </motion.p>
         </motion.div>
 
@@ -183,7 +203,7 @@ export default function Contact() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-6xl mx-auto"
         >
           {/* Contact Info */}
           <div className="space-y-8">
@@ -206,13 +226,13 @@ export default function Contact() {
                 }}
                 whileHover={{ scale: 1.02, x: 10 }}
                 whileTap={{ scale: 0.98 }}
-                className={`flex items-center p-6 rounded-xl bg-gray-800/50 hover:bg-gray-800/80 transition-all duration-300 shadow-lg hover:shadow-xl`}
+                className="flex items-center p-6 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 transition-all duration-300"
               >
-                <div className={`p-3 rounded-lg bg-yellow-500/10 text-yellow-500`}>
+                <div className="p-3 rounded-lg bg-amber-500/10 text-amber-500">
                   <item.icon className="w-6 h-6" />
                 </div>
                 <div className="ml-4">
-                  <p className="font-medium text-gray-200">{item.title}</p>
+                  <p className="font-medium text-white group-hover:text-amber-200 transition-colors">{item.title}</p>
                   <p className="text-gray-400">{item.content}</p>
                 </div>
               </motion.a>
@@ -242,7 +262,7 @@ export default function Contact() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   whileTap={{ scale: 0.9 }}
-                  className={`p-3 rounded-full bg-gray-800/50 hover:bg-gray-800/80 text-yellow-500 transition-all duration-300 shadow-lg hover:shadow-xl`}
+                  className="p-3 rounded-full bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-amber-500 transition-all duration-300"
                 >
                   <social.icon className="w-5 h-5" />
                 </motion.a>
@@ -299,9 +319,9 @@ export default function Contact() {
                     field === 'subject' ? 'Asunto' :
                     'Mensaje'
                   }
-                  className={`w-full p-4 rounded-lg outline-none transition-all duration-300 bg-gray-800/50 text-white placeholder-gray-500 focus:bg-gray-800/80 ${
+                  className={`w-full p-4 rounded-lg outline-none transition-all duration-300 bg-white/[0.03] border border-white/10 text-white placeholder-gray-500 focus:bg-white/[0.06] ${
                     focusedField === field 
-                      ? 'ring-2 ring-yellow-500 shadow-lg shadow-yellow-500/20' 
+                      ? 'ring-2 ring-amber-500 shadow-lg shadow-amber-500/20' 
                       : 'shadow-md'
                   }`}
                   style={{
@@ -329,7 +349,7 @@ export default function Contact() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               disabled={sending}
-              className={`w-full p-4 rounded-lg font-medium flex items-center justify-center gap-2 bg-yellow-500 text-gray-900 hover:bg-yellow-400 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl`}
+              className="w-full p-4 rounded-lg font-medium flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-gray-900 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-amber-500/20"
             >
               {sending ? (
                 <motion.div

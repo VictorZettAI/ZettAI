@@ -21,7 +21,7 @@ export function Chatbot({ isDarkMode }: ChatbotProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: '¡Hola! Soy el asistente virtual de Zettai AI. ¿En qué puedo ayudarte?',
+      text: '¡Hola! Soy el asistente virtual de ZettAI. ¿En qué puedo ayudarte?',
       isBot: true
     }
   ])
@@ -54,10 +54,8 @@ export function Chatbot({ isDarkMode }: ChatbotProps) {
   return (
     <>
       <motion.button
-        className={`fixed bottom-8 right-8 z-50 p-4 rounded-full shadow-lg ${
-          isDarkMode ? 'bg-yellow-500 text-black' : 'bg-yellow-600 text-white'
-        }`}
-        whileHover={{ scale: 1.1 }}
+        className="fixed bottom-8 right-8 z-50 p-4 rounded-full shadow-lg bg-gradient-to-r from-amber-500 to-amber-600 text-black hover:from-amber-600 hover:to-amber-700 transition-all duration-300"
+        whileHover={{ scale: 1.1, rotate: 5 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
       >
@@ -72,17 +70,11 @@ export function Chatbot({ isDarkMode }: ChatbotProps) {
             exit={{ opacity: 0, y: 100 }}
             className="fixed bottom-24 right-8 z-50 w-96"
           >
-            <Card className={`shadow-xl border ${
-              isDarkMode 
-                ? 'bg-gray-800 border-gray-700' 
-                : 'bg-white border-gray-200'
-            }`}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Card className="shadow-2xl border-0 bg-[#030407] text-white">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 border-b border-amber-500/20">
                 <CardTitle className="text-xl font-bold flex items-center">
-                  <Bot className={`w-6 h-6 mr-2 ${
-                    isDarkMode ? 'text-yellow-500' : 'text-yellow-600'
-                  }`} />
-                  <span className={isDarkMode ? 'text-white' : 'text-gray-900'}>
+                  <Bot className="w-6 h-6 mr-2 text-amber-500" />
+                  <span className="text-white">
                     Asistente Virtual
                   </span>
                 </CardTitle>
@@ -90,13 +82,13 @@ export function Chatbot({ isDarkMode }: ChatbotProps) {
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsOpen(false)}
-                  className={isDarkMode ? 'text-gray-400 hover:text-white' : ''}
+                  className="bg-gray-800 hover:bg-gray-700 text-amber-500 hover:text-amber-400 transition-colors rounded-full w-8 h-8 p-1"
                 >
                   <X className="w-5 h-5" />
                 </Button>
               </CardHeader>
-              <CardContent>
-                <div className="h-96 overflow-y-auto mb-4 space-y-4">
+              <CardContent className="pt-4">
+                <div className="h-96 overflow-y-auto mb-4 space-y-4 scrollbar-thin scrollbar-thumb-amber-500/20 scrollbar-track-transparent">
                   {messages.map((message) => (
                     <div
                       key={message.id}
@@ -108,21 +100,15 @@ export function Chatbot({ isDarkMode }: ChatbotProps) {
                         {message.isBot && (
                           <Avatar className="w-8 h-8">
                             <AvatarImage src="/bot-avatar.png" />
-                            <AvatarFallback className={
-                              isDarkMode ? 'bg-yellow-500 text-black' : 'bg-yellow-600 text-white'
-                            }>
+                            <AvatarFallback className="bg-amber-500 text-black">
                               AI
                             </AvatarFallback>
                           </Avatar>
                         )}
                         <div className={`rounded-lg p-3 ${
                           message.isBot
-                            ? isDarkMode 
-                              ? 'bg-gray-700 text-white' 
-                              : 'bg-gray-100 text-gray-900'
-                            : isDarkMode
-                              ? 'bg-yellow-500 text-black'
-                              : 'bg-yellow-600 text-white'
+                            ? 'bg-gray-800/50 text-white border border-amber-500/20' 
+                            : 'bg-gradient-to-r from-amber-500 to-amber-600 text-black'
                         }`}>
                           {message.text}
                         </div>
@@ -135,10 +121,14 @@ export function Chatbot({ isDarkMode }: ChatbotProps) {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Escribe tu mensaje..."
-                    className={isDarkMode ? 'bg-gray-700 border-gray-600' : ''}
+                    className="bg-gray-800/50 border-amber-500/20 focus:border-amber-500 focus:ring-amber-500/20 placeholder-gray-500"
                   />
-                  <Button type="submit" size="icon">
-                    <Send className="w-4 h-4" />
+                  <Button 
+                    type="submit" 
+                    className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-4 rounded-full transition-colors"
+                  >
+                    <Send className="w-4 h-4 mr-1" />
+                    <span>Enviar</span>
                   </Button>
                 </form>
               </CardContent>

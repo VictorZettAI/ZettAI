@@ -8,6 +8,8 @@ import { ArrowUp } from 'lucide-react'
 import { Button } from './components/ui/button'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import DemoSection from './components/DemoSection'
+import './styles/animations.css'
+import './styles/backgrounds.css'
 
 // Lazy load components for better performance
 const Services = lazy(() => import('./components/Services'))

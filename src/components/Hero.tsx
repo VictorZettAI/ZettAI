@@ -2,6 +2,8 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue, useAnimatio
 import { Button } from './ui/button'
 import { Sparkles, MousePointer2, ArrowDown, Play } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import geometricBg from '../assets/robot.jpg'
+import circuitLines from '../assets/circuit-lines.jpg'
 
 interface HeroProps {
 }
@@ -52,14 +54,16 @@ export function Hero() {
   const titleVariants = {
     initial: { 
       opacity: 0,
-      y: 20
+      y: 20,
+      filter: "blur(5px)"
     },
     animate: {
       opacity: 1,
       y: 0,
+      filter: "blur(0px)",
       transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1],
         staggerChildren: 0.08
       }
     }
@@ -69,19 +73,22 @@ export function Hero() {
     initial: { 
       opacity: 0,
       y: 20,
-      rotateX: 20
+      rotateX: 20,
+      filter: "blur(3px)"
     },
     animate: {
       opacity: 1,
       y: 0,
       rotateX: 0,
+      filter: "blur(0px)",
       transition: {
         duration: 0.6,
-        ease: [0.16, 1, 0.3, 1]
+        ease: [0.4, 0, 0.2, 1]
       }
     },
     hover: {
       y: -2,
+      scale: 1.02,
       transition: {
         duration: 0.2,
         ease: "easeOut"
@@ -92,14 +99,16 @@ export function Hero() {
   const buttonVariants = {
     initial: { 
       opacity: 0,
-      y: 20
+      y: 20,
+      scale: 0.95
     },
     animate: { 
       opacity: 1,
       y: 0,
+      scale: 1,
       transition: {
         duration: 0.4,
-        ease: [0.16, 1, 0.3, 1]
+        ease: [0.4, 0, 0.2, 1]
       }
     },
     hover: { 
@@ -146,16 +155,32 @@ export function Hero() {
     }
   }
 
+  const mouseInteractionVariants = {
+    initial: { 
+      opacity: 0,
+      scale: 0.8,
+    },
+    animate: {
+      opacity: [0.3, 0.5, 0.3],
+      scale: 1,
+      transition: {
+        duration: 2,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }
+    }
+  }
+
   const backgroundPatternVariants = {
     animate: {
       background: [
-        'radial-gradient(circle at 20% 20%, rgba(234, 179, 8, 0.15) 0%, transparent 70%)',
-        'radial-gradient(circle at 80% 80%, rgba(234, 179, 8, 0.15) 0%, transparent 70%)',
-        'radial-gradient(circle at 80% 20%, rgba(234, 179, 8, 0.15) 0%, transparent 70%)',
-        'radial-gradient(circle at 20% 80%, rgba(234, 179, 8, 0.15) 0%, transparent 70%)',
+        'radial-gradient(circle at 20% 20%, rgba(234, 179, 8, 0.2) 0%, transparent 70%)',
+        'radial-gradient(circle at 80% 80%, rgba(234, 179, 8, 0.2) 0%, transparent 70%)',
+        'radial-gradient(circle at 80% 20%, rgba(234, 179, 8, 0.2) 0%, transparent 70%)',
+        'radial-gradient(circle at 20% 80%, rgba(234, 179, 8, 0.2) 0%, transparent 70%)',
       ],
       transition: {
-        duration: 20,
+        duration: 15,
         repeat: Infinity,
         ease: "linear",
         times: [0, 0.25, 0.5, 0.75]
@@ -166,74 +191,48 @@ export function Hero() {
   return (
     <motion.section 
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0B1120]"
-      style={{
-        perspective: "1500px",
-        transformStyle: "preserve-3d"
-      }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Animated background patterns */}
-      <motion.div 
-        className="absolute inset-0 opacity-30"
-        variants={backgroundPatternVariants}
-        animate="animate"
+      {/* Fondo de circuitos */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url(${circuitLines})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center -250px',
+          opacity: 0.6
+        }}
       />
 
-      {/* Video Background with Parallax */}
+      {/* Imagen principal */}
       <motion.div 
-        className="absolute inset-0 w-full h-full"
-        style={{ 
-          y, 
-          scale,
-          x: parallaxX,
-          transformStyle: "preserve-3d"
+        className="absolute inset-0"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ 
+          duration: 0.8,
+          ease: "easeOut",
+          delay: 0.3
         }}
-        animate={{ opacity: isVideoLoaded ? 0.8 : 0 }}
-        transition={{ duration: 1.5 }}
-      >
-        <motion.div 
-          className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent z-10"
-          style={{
-            rotateX,
-            rotateY,
-            transformStyle: "preserve-3d"
-          }}
-        />
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="object-cover w-full h-[120%] transition-all duration-1000 transform"
-          onLoadedData={() => setIsVideoLoaded(true)}
-          poster="/videos/poster.jpg"
-        >
-          <source src="/videos/ai-backgrounds.mp4" type="video/mp4" />
-        </video>
-      </motion.div>
+        style={{
+          backgroundImage: `url(${geometricBg})`,
+          backgroundSize: '85%',
+          backgroundPosition: 'left center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
 
-      {/* Content with Enhanced Animations */}
-      <motion.div 
-        className="container mx-auto px-4 py-32 relative z-20"
-        style={{ 
-          opacity,
-          y: parallaxY,
-          transformStyle: "preserve-3d"
-        }}
-        variants={titleVariants}
-        initial="initial"
-        animate={isVisible ? "animate" : "initial"}
-      >
+      {/* Content Container */}
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div 
-          className="max-w-4xl mx-auto text-center"
+          className="ml-auto w-full md:w-1/2 text-right"
           style={{
             rotateX,
             rotateY,
-            transformStyle: "preserve-3d"
+            transformStyle: "preserve-3d",
+            filter: isHovered ? "brightness(1.1)" : "brightness(1)"
           }}
+          transition={{ duration: 0.3 }}
         >
           <motion.h1 
             className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-white"
@@ -242,7 +241,7 @@ export function Hero() {
             {["Potencia", "tu", "Negocio", "con"].map((word, i) => (
               <motion.span
                 key={i}
-                className="inline-block mx-2"
+                className="inline-block ml-4"
                 variants={wordVariants}
                 whileHover="hover"
               >
@@ -266,8 +265,15 @@ export function Hero() {
           </motion.p>
 
           <motion.div 
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-6 justify-end"
             variants={titleVariants}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              delay: 0.4,
+              duration: 0.6,
+              ease: [0.4, 0, 0.2, 1]
+            }}
           >
             <motion.div
               variants={buttonVariants}
@@ -276,7 +282,7 @@ export function Hero() {
             >
               <Button 
                 size="lg" 
-                className="group relative overflow-hidden bg-yellow-500 hover:bg-yellow-400 text-white border-none"
+                className="group relative overflow-hidden bg-yellow-500 hover:bg-yellow-400 text-white border-none button-pulse"
               >
                 <span className="relative z-10 flex items-center">
                   Comienza Ahora
@@ -306,7 +312,7 @@ export function Hero() {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="group relative overflow-hidden border-2 border-gray-600 bg-gray-800/30 hover:border-gray-500 hover:bg-gray-800/50"
+                className="group relative overflow-hidden border-2 border-gray-600 bg-gray-800/30 hover:border-gray-500 hover:bg-gray-800/50 button-pulse"
               >
                 <span className="relative z-10 flex items-center text-white/80 group-hover:text-white">
                   Ver Demo
@@ -335,16 +341,33 @@ export function Hero() {
             </motion.div>
           </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
-      {/* Scroll Indicator */}
+      {/* Enhanced Scroll Indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer hover-scale"
         variants={scrollIndicatorVariants}
         initial="initial"
         animate="animate"
+        whileHover={{ scale: 1.1 }}
+        onClick={() => window.scrollTo({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        })}
       >
-        <ArrowDown className="w-6 h-6 text-white/80" />
+        <motion.div
+          animate={{
+            y: [0, 8, 0],
+            opacity: [0.6, 1, 0.6]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          <ArrowDown className="w-6 h-6 text-white/80" />
+        </motion.div>
       </motion.div>
     </motion.section>
   )
