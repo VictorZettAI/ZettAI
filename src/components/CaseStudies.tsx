@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import CountUp from 'react-countup'
-import { useRef, useState } from 'react'
-import networkBg from '../assets/network-bg.jpg'
+import { useRef, useState, useEffect } from 'react'
+import trianglePortal from '../assets/city.jpg'
 
 interface CaseStudiesProps {
 }
@@ -62,6 +62,7 @@ const caseStudies = [
 
 export default function CaseStudies() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [startCounting, setStartCounting] = useState(false)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
@@ -70,24 +71,62 @@ export default function CaseStudies() {
   const y = useTransform(scrollYProgress, [0, 1], [100, -100])
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setStartCounting(true);
+        }
+      },
+      { threshold: 0.3 } // Trigger when 30% of the section is visible
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, []);
+
   return (
     <section 
       id="casos" 
       ref={containerRef}
-      className="relative py-32 overflow-hidden"
+      className="relative py-32 overflow-hidden bg-[#030407]"
     >
-      {/* Fondo de red neuronal */}
+      {/* Imagen de fondo */}
       <div 
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-90 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${networkBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.7
+          backgroundImage: `url(${trianglePortal})`,
+          backgroundSize: '80%', 
+          backgroundPosition: 'left',
+          backgroundRepeat: 'no-repeat', 
+          filter: 'grayscale(30%) brightness(100%)'
         }}
       />
-      
+
+      {/* Gradiente superior */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-24 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent)',
+          zIndex: 1
+        }}
+      />
+
+      {/* Sombra inferior */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7))'
+        }}
+      />
+
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         <motion.div
           initial="hidden"
@@ -164,37 +203,49 @@ export default function CaseStudies() {
             <motion.div
               key={metric.label}
               variants={{
-                hidden: { y: 20, opacity: 0 },
+                hidden: { opacity: 0, y: 20 },
                 visible: {
-                  y: 0,
                   opacity: 1,
+                  y: 0,
                   transition: {
                     type: "spring",
                     stiffness: 100,
                     damping: 15,
-                    delay: index * 0.1
+                    delay: index * 0.2
                   }
                 }
               }}
-              className="p-8 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-500"
+              className="bg-[#000000] border border-white/10 rounded-2xl p-6 
+                transition-all duration-300 hover:border-amber-500/30 
+                hover:shadow-lg hover:shadow-amber-500/20
+                bg-opacity-70 backdrop-blur-sm 
+                flex flex-col justify-between"
             >
-              <div className="flex items-baseline gap-1 mb-3">
-                <CountUp
-                  end={metric.value}
-                  decimals={metric.value % 1 !== 0 ? 1 : 0}
-                  duration={2.5}
-                  className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 bg-clip-text text-transparent"
-                />
-                <span className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 bg-clip-text text-transparent">
-                  {metric.suffix}
-                </span>
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 bg-clip-text text-transparent">
+                    {startCounting ? (
+                      <CountUp 
+                        end={metric.value} 
+                        suffix={metric.suffix} 
+                        duration={2} 
+                        enableScrollSpy
+                      />
+                    ) : (
+                      '0' + metric.suffix
+                    )}
+                  </div>
+                  <span className="text-sm text-amber-200 bg-amber-500/10 px-3 py-1 rounded-full">
+                    Métrica
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  {metric.label}
+                </h3>
+                <p className="text-gray-400 text-sm">
+                  {metric.description}
+                </p>
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-white">
-                {metric.label}
-              </h3>
-              <p className="text-gray-400 leading-relaxed">
-                {metric.description}
-              </p>
             </motion.div>
           ))}
         </motion.div>
@@ -220,10 +271,10 @@ export default function CaseStudies() {
             <motion.div
               key={study.company}
               variants={{
-                hidden: { y: 20, opacity: 0 },
+                hidden: { opacity: 0, y: 20 },
                 visible: {
-                  y: 0,
                   opacity: 1,
+                  y: 0,
                   transition: {
                     type: "spring",
                     stiffness: 100,
@@ -232,43 +283,48 @@ export default function CaseStudies() {
                   }
                 }
               }}
-              className="p-8 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-500"
+              className="bg-[#000000] border border-white/10 rounded-2xl p-8 space-y-6 
+                transition-all duration-300 hover:border-amber-500/30 
+                hover:shadow-lg hover:shadow-amber-500/20
+                bg-opacity-70 backdrop-blur-sm"
             >
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">{study.company}</h3>
-                <span className="inline-block px-3 py-1 rounded-full text-sm font-medium bg-amber-500/10 text-amber-200">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold text-white">{study.company}</h3>
+                <span className="text-sm text-amber-200 bg-amber-500/10 px-3 py-1 rounded-full">
                   {study.industry}
                 </span>
               </div>
-              
-              <div className="space-y-4 mb-8">
+              <div className="space-y-4">
                 <div>
-                  <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Desafío</h4>
-                  <p className="text-gray-300">{study.challenge}</p>
+                  <p className="text-gray-300 font-medium">Desafío:</p>
+                  <p className="text-gray-400">{study.challenge}</p>
                 </div>
                 <div>
-                  <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Solución</h4>
-                  <p className="text-gray-300">{study.solution}</p>
+                  <p className="text-gray-300 font-medium">Solución:</p>
+                  <p className="text-gray-400">{study.solution}</p>
                 </div>
                 <div>
-                  <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2">Resultados</h4>
-                  <ul className="list-disc list-inside text-gray-300 space-y-1">
-                    {study.results.map((result, i) => (
-                      <li key={i} className="before:content-['•'] before:text-amber-500 before:mr-2">
+                  <p className="text-gray-300 font-medium">Resultados:</p>
+                  <ul className="list-disc list-inside text-gray-400 space-y-1">
+                    {study.results.map((result, idx) => (
+                      <li key={idx} className="before:content-['•'] before:text-amber-500 before:mr-2">
                         {result}
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
-
-              <blockquote className="border-l-2 border-amber-500/30 pl-4">
-                <p className="text-gray-300 italic mb-4">{study.testimonial.quote}</p>
-                <footer>
-                  <div className="font-medium text-white">{study.testimonial.author}</div>
-                  <div className="text-sm text-gray-400">{study.testimonial.position}</div>
-                </footer>
-              </blockquote>
+              <div className="border-t border-white/10 pt-6 mt-6">
+                <blockquote className="italic text-gray-300 mb-4 border-l-2 border-amber-500/30 pl-4">
+                  "{study.testimonial.quote}"
+                </blockquote>
+                <div className="flex items-center space-x-3">
+                  <div>
+                    <p className="text-white font-semibold">{study.testimonial.author}</p>
+                    <p className="text-sm text-gray-400">{study.testimonial.position}</p>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </motion.div>

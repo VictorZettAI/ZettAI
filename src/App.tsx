@@ -1,5 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { HelmetProvider } from 'react-helmet-async'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import { Hero } from './components/Hero'
 import Footer from './components/Footer'
@@ -16,6 +17,8 @@ const Services = lazy(() => import('./components/Services'))
 const CaseStudies = lazy(() => import('./components/CaseStudies'))
 const Team = lazy(() => import('./components/Team'))
 const Contact = lazy(() => import('./components/Contact'))
+const Blog = lazy(() => import('./components/Blogs'))
+const IAS = lazy(() => import('./components/IAS'))
 
 // Loading fallback
 const LoadingFallback = () => (
@@ -41,42 +44,45 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      <div className="min-h-screen bg-[#070914] text-white">
-        <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-        
-        <main>
-          <Hero />
+      <Router>
+        <div className="min-h-screen bg-[#070914] text-white">
+          <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
           <Suspense fallback={<LoadingFallback />}>
-            <Services />
-            <CaseStudies />
-            <DemoSection />
-            <Team />
-            <Contact />
+            <Routes>
+              <Route path="/" element={
+                <main>
+                  <Hero />
+                  <Services />
+                  <DemoSection />
+                  <CaseStudies />
+                  <Team />
+                  <Contact />
+                </main>
+              } />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/ias" element={<IAS />} />
+            </Routes>
           </Suspense>
-        </main>
+          <Chatbot />
+          <Footer />
 
-        <Footer />
-        <Chatbot />
-
-        {/* Scroll to top button */}
-        <motion.div
-          style={{ opacity }}
-          className="fixed bottom-8 right-8 z-50"
-        >
           {showScrollTop && (
-            <motion.button
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="p-3 rounded-full bg-yellow-500 text-gray-900 shadow-lg hover:bg-yellow-400 transition-colors"
+            <motion.div 
+              style={{ opacity }}
+              className="fixed bottom-8 right-8 z-50"
             >
-              <ArrowUp className="w-6 h-6" />
-            </motion.button>
+              <Button
+                size="icon"
+                variant="outline"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="rounded-full bg-yellow-500 hover:bg-yellow-400 text-black border-none shadow-lg"
+              >
+                <ArrowUp className="h-4 w-4" />
+              </Button>
+            </motion.div>
           )}
-        </motion.div>
-      </div>
+        </div>
+      </Router>
     </HelmetProvider>
   )
 }

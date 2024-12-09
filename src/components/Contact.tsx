@@ -96,7 +96,16 @@ export default function Contact() {
   }
 
   return (
-    <section id="contacto" className="py-32 relative overflow-hidden bg-[#0B1120]">
+    <section id="contacto" className="py-32 relative overflow-hidden bg-black">
+      {/* Gradiente superior */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-24 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent)',
+          zIndex: 1
+        }}
+      />
+
       {/* Animated gradient background */}
       <motion.div 
         className="absolute inset-0 -z-10 opacity-30"

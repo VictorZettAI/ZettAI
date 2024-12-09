@@ -1,10 +1,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Play, CheckCircle, ArrowRight } from 'lucide-react'
 import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import trianglePortal from '../assets/triangle-portal.jpg'
-
-interface DemoSectionProps {
-}
 
 const features = [
   {
@@ -55,10 +53,38 @@ export default function DemoSection() {
     <section 
       ref={containerRef}
       id="demo" 
-      className="py-32 relative overflow-hidden bg-black"
+      className="py-32 relative overflow-hidden bg-black perspective-1000"
     >
+      {/* Partículas 3D sutiles */}
+      <div className="absolute inset-0 -z-10">
+        {[...Array(100)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 3 + 2}px`,
+              height: `${Math.random() * 3 + 2}px`,
+              background: `rgba(255, 255, 255, ${Math.random() * 0.15 + 0.05})`,
+              boxShadow: '0 0 2px rgba(255, 255, 255, 0.3)',
+              transform: `translateZ(${Math.random() * 100}px)`,
+              animation: `particle${i} ${Math.random() * 20 + 15}s linear infinite`,
+            }}
+          />
+        ))}
+      </div>
+
       <div className="absolute inset-0 bg-gradient-to-b from-amber-500/5 via-transparent to-transparent opacity-50" />
-      
+
+      {/* Sombra inferior */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to top, transparent, rgba(0, 0, 0, 0.7))'
+        }}
+      />
+
       <div className="container mx-auto px-6 relative">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -175,16 +201,60 @@ export default function DemoSection() {
               </motion.div>
             ))}
 
-            <motion.button
-              whileHover={{ x: 5 }}
-              className="mt-8 inline-flex items-center px-6 py-3 rounded-lg text-sm font-medium bg-amber-500 hover:bg-amber-400 text-gray-900 transition-colors shadow-lg shadow-amber-500/20"
-            >
-              Solicitar Demo Personalizada
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </motion.button>
+            <div className="flex justify-center mt-12">
+              <Link to="/ias">
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  className="inline-flex items-center px-6 py-3 rounded-lg text-sm font-medium bg-amber-500 hover:bg-amber-400 text-gray-900 transition-colors shadow-lg shadow-amber-500/20 mr-4"
+                >
+                  Solicitar Demo Personalizada
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </motion.button>
+              </Link>
+              <Link to="/blog">
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  className="inline-flex items-center px-6 py-3 rounded-lg text-sm font-medium bg-amber-500 hover:bg-amber-400 text-gray-900 transition-colors shadow-lg shadow-amber-500/20"
+                >
+                  Descubre Nuestro Blog
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </motion.button>
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>
+
+      <style jsx>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        ${[...Array(100)].map((_, i) => `
+          @keyframes particle${i} {
+            0% {
+              transform: translate3d(
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 100}px
+              );
+            }
+            50% {
+              transform: translate3d(
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 200}px
+              );
+            }
+            100% {
+              transform: translate3d(
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 100}px
+              );
+            }
+          }
+        `).join('\n')}
+      `}</style>
     </section>
   )
 }

@@ -4,7 +4,7 @@ import anaImage from '../assets/team/ana.jpg'
 import carlosImage from '../assets/team/carlos.jpg'
 import lauraImage from '../assets/team/laura.jpg'
 import davidImage from '../assets/team/david.jpg'
-import zettaiLogo from '../assets/zettai-logo.png'
+import blackWavesBg from '../assets/backgrounds/black-waves.jpg'
 
 interface TeamMember {
   name: string
@@ -88,32 +88,47 @@ const SocialIcon = ({ platform, url }: { platform: string; url: string }) => {
 const Team = () => {
   return (
     <section className="relative py-32 overflow-hidden bg-[#030407]">
-      {/* Background layers for depth effect */}
+      {/* Gradiente superior */}
       <div 
-        className="absolute inset-0" 
+        className="absolute top-0 left-0 right-0 h-24 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at center, rgba(251, 191, 36, 0.15) 0%, rgba(0,0,0,0.8) 100%)',
-          mixBlendMode: 'overlay'
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent)',
+          zIndex: 1
+        }}
+      />
+
+      {/* Sombra superior */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-16 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to top, transparent, rgba(0, 0, 0, 0.7))'
+        }}
+      />
+
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url(${blackWavesBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 1
         }}
       />
       <div 
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(circle at 20% 20%, rgba(251, 191, 36, 0.2) 0%, transparent 50%)',
+          background: 'radial-gradient(circle at 20% 20%, rgba(251, 191, 36, 0.05) 0%, transparent 70%)',
           mixBlendMode: 'overlay'
         }}
       />
       <div 
-        className="absolute inset-0 bg-[#030407]/90"
+        className="absolute inset-0 bg-[#030407]/30"
         style={{
-          backdropFilter: 'blur(100px)'
+          backdropFilter: 'blur(2px)'
         }}
       />
-      
-      {/* Logo background */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-40">
-        <img src={zettaiLogo} alt="" className="w-[80rem] h-auto" />
-      </div>
       
       <div className="container mx-auto px-6 relative">
         <motion.div
@@ -197,6 +212,14 @@ const Team = () => {
           ))}
         </div>
       </div>
+      {/* Sombra inferior mejorada */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent)',
+          zIndex: 1
+        }}
+      />
     </section>
   )
 }

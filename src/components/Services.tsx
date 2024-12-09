@@ -54,10 +54,11 @@ const ServiceCard = ({ title, description, Icon, delay }: ServiceCardProps) => {
   // Mouse movement animation setup
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-  const rotateX = useTransform(mouseY, [-100, 100], [10, -10])
-  const rotateY = useTransform(mouseX, [-100, 100], [-10, 10])
+  const rotateX = useTransform(mouseY, [-100, 100], [15, -15])  
+  const rotateY = useTransform(mouseX, [-100, 100], [-15, 15])  
   const glowX = useTransform(mouseX, [-100, 100], [0, 100])
   const glowY = useTransform(mouseY, [-100, 100], [0, 100])
+  const z = useTransform(mouseY, [-100, 100], [0, 50])  
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect()
@@ -65,6 +66,7 @@ const ServiceCard = ({ title, description, Icon, delay }: ServiceCardProps) => {
     const centerY = rect.top + rect.height / 2
     mouseX.set(event.clientX - centerX)
     mouseY.set(event.clientY - centerY)
+    setIsHovered(true)
   }
 
   const handleMouseLeave = () => {
@@ -85,7 +87,8 @@ const ServiceCard = ({ title, description, Icon, delay }: ServiceCardProps) => {
       y: 50,
       scale: 0.9,
       filter: "blur(10px)",
-      rotateX: 20
+      rotateX: 20,
+      z: 0
     },
     visible: { 
       opacity: 1, 
@@ -93,6 +96,7 @@ const ServiceCard = ({ title, description, Icon, delay }: ServiceCardProps) => {
       scale: 1,
       filter: "blur(0px)",
       rotateX: 0,
+      z: 50,
       transition: {
         type: "spring",
         stiffness: 100,
@@ -100,159 +104,68 @@ const ServiceCard = ({ title, description, Icon, delay }: ServiceCardProps) => {
         mass: 1,
         delay: delay * 0.1
       }
-    },
-    hover: {
-      scale: 1.02,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 25
-      }
-    }
-  }
-
-  const iconVariants = {
-    hidden: { 
-      scale: 0,
-      rotate: -45,
-      opacity: 0 
-    },
-    visible: { 
-      scale: 1,
-      rotate: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 20,
-        delay: (delay * 0.1) + 0.3
-      }
-    },
-    hover: {
-      scale: 1.2,
-      rotate: [0, 5, -5, 0],
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut",
-        times: [0, 0.3, 0.6, 1]
-      }
     }
   }
 
   return (
     <motion.div
       ref={ref}
-      variants={cardVariants}
       initial="hidden"
       animate={controls}
-      whileHover="hover"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
+      variants={cardVariants}
       style={{
         rotateX,
         rotateY,
+        z,
         transformStyle: "preserve-3d",
-        perspective: 1000
+        transformPerspective: "1000px"
       }}
-      className="group relative p-8 rounded-2xl bg-gray-800/50 backdrop-blur-sm hover:bg-gray-800/80 transform-gpu transition-all duration-300"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`relative p-6 rounded-xl backdrop-blur-sm 
+        ${isHovered ? 'shadow-2xl scale-105' : 'shadow-xl'} 
+        transition-all duration-300 ease-out
+        bg-gradient-to-br from-white/10 to-white/5 
+        border border-white/20 hover:border-white/40
+        dark:from-gray-800/50 dark:to-gray-900/50
+        dark:border-gray-700/50 dark:hover:border-gray-600`}
     >
-      {/* Animated gradient border */}
-      <motion.div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{
-          background: `
-            linear-gradient(
-              to bottom right,
-              rgba(234, 179, 8, 0.2),
-              transparent,
-              rgba(234, 179, 8, 0.2)
-            )
-          `,
-          filter: "blur(1px)",
-          transformStyle: "preserve-3d",
-          transform: "translateZ(-1px)"
-        }}
-      />
-
-      {/* Glow effect following mouse */}
-      <motion.div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
-        style={{
-          background: useTransform(
-            [glowX, glowY],
-            ([x, y]) => `radial-gradient(
-              circle at ${x}% ${y}%,
-              rgba(234, 179, 8, 0.15),
-              transparent 80%
-            )`
-          ),
-          transformStyle: "preserve-3d",
-          transform: "translateZ(-2px)"
-        }}
-      />
-      
-      <motion.div
-        className="relative z-10"
-        style={{ transform: "translateZ(20px)" }}
-      >
-        <div className="flex items-center space-x-4 mb-6">
-          <motion.div
-            variants={iconVariants}
-            className="p-4 rounded-xl bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 text-yellow-500 transform-gpu"
-            style={{ transform: "translateZ(30px)" }}
-          >
-            <Icon className="w-7 h-7" />
-          </motion.div>
-          <motion.h3 
-            className="text-xl font-bold bg-gradient-to-r from-white to-gray-100 bg-clip-text text-transparent"
-            variants={{
-              hover: {
-                x: 5,
-                transition: { duration: 0.2 }
-              }
-            }}
-            style={{ transform: "translateZ(25px)" }}
-          >
-            {title}
-          </motion.h3>
-        </div>
-        
-        <motion.p 
-          className="text-base leading-relaxed text-gray-400"
-          variants={{
-            hover: {
-              y: -2,
-              transition: { duration: 0.2 }
-            }
+      <div className="relative z-10">
+        <motion.div 
+          className="w-12 h-12 mb-4 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center"
+          animate={{ 
+            boxShadow: isHovered 
+              ? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" 
+              : "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
           }}
-          style={{ transform: "translateZ(15px)" }}
         >
-          {description}
-        </motion.p>
-
+          <Icon className="w-6 h-6 text-primary" />
+        </motion.div>
+        <h3 className="text-xl font-semibold mb-2">{title}</h3>
+        <p className="text-gray-600 dark:text-gray-300">{description}</p>
+      </div>
+      {isHovered && (
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[2px] opacity-0 group-hover:opacity-100"
+          className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           style={{
-            background: "linear-gradient(90deg, rgba(234, 179, 8, 0.7) 0%, rgba(234, 179, 8, 0.3) 100%)",
-            transformStyle: "preserve-3d",
-            transform: "translateZ(10px)"
+            background: `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,255,255,0.1) 0%, transparent 50%)`
           }}
-          animate={isHovered ? { scaleX: 1 } : { scaleX: 0 }}
-          initial={{ scaleX: 0 }}
-          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
         />
-      </motion.div>
+      )}
     </motion.div>
   )
 }
 
 export default function Services() {
-  const controls = useAnimation()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
   })
+
+  const controls = useAnimation()
 
   useEffect(() => {
     if (inView) {
@@ -261,18 +174,11 @@ export default function Services() {
   }, [controls, inView])
 
   const containerVariants = {
-    hidden: { 
-      opacity: 0,
-      filter: "blur(10px)"
-    },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      filter: "blur(0px)",
       transition: {
-        duration: 0.8,
-        ease: [0.4, 0, 0.2, 1],
-        staggerChildren: 0.15,
-        delayChildren: 0.3
+        staggerChildren: 0.1
       }
     }
   }
@@ -281,8 +187,28 @@ export default function Services() {
     <section 
       id="servicios"
       ref={ref}
-      className="relative py-32 overflow-hidden bg-black"
+      className="relative py-32 bg-black perspective-1000"
     >
+      {/* Partículas 3D sutiles */}
+      <div className="absolute inset-0 -z-10">
+        {[...Array(100)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 3 + 2}px`,
+              height: `${Math.random() * 3 + 2}px`,
+              background: `rgba(255, 255, 255, ${Math.random() * 0.15 + 0.05})`,
+              boxShadow: '0 0 2px rgba(255, 255, 255, 0.3)',
+              transform: `translateZ(${Math.random() * 100}px)`,
+              animation: `particle${i} ${Math.random() * 20 + 15}s linear infinite`,
+            }}
+          />
+        ))}
+      </div>
+
       <div className="container mx-auto px-6 relative">
         <motion.div
           variants={containerVariants}
@@ -371,6 +297,37 @@ export default function Services() {
           </motion.div>
         </motion.div>
       </div>
+
+      <style jsx>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        ${[...Array(100)].map((_, i) => `
+          @keyframes particle${i} {
+            0% {
+              transform: translate3d(
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 100}px
+              );
+            }
+            50% {
+              transform: translate3d(
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 200}px
+              );
+            }
+            100% {
+              transform: translate3d(
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 40 - 20}px,
+                ${Math.random() * 100}px
+              );
+            }
+          }
+        `).join('\n')}
+      `}</style>
     </section>
   )
 }

@@ -204,6 +204,14 @@ export function Hero() {
         }}
       />
 
+      {/* Sombra inferior */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7))'
+        }}
+      />
+
       {/* Imagen principal */}
       <motion.div 
         className="absolute inset-0"
@@ -369,6 +377,14 @@ export function Hero() {
           <ArrowDown className="w-6 h-6 text-white/80" />
         </motion.div>
       </motion.div>
+
+      {/* Bottom Shadow Overlay */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, transparent, rgba(3, 4, 7, 0.95))'
+        }}
+      />
     </motion.section>
   )
 }

@@ -17,12 +17,12 @@ export default function Header({ isMenuOpen, setIsMenuOpen }: HeaderProps) {
   const headerBackground = useTransform(
     scrollY,
     [0, 50],
-    ['rgba(11, 17, 32, 0)', 'rgba(11, 17, 32, 0.9)']
+    ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.9)']
   )
   const headerBorder = useTransform(
     scrollY,
     [0, 50],
-    ['rgba(75, 85, 99, 0)', 'rgba(75, 85, 99, 0.3)']
+    ['rgba(75, 85, 99, 0)', 'rgba(251, 191, 36, 0.3)']
   )
   const headerBlur = useTransform(
     scrollY,
@@ -200,7 +200,7 @@ export default function Header({ isMenuOpen, setIsMenuOpen }: HeaderProps) {
                 whileHover={{ x: 10 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setIsMenuOpen(false)}
-                className={`text-sm font-medium px-3 py-2 rounded-lg transition-colors duration-300 text-gray-300 hover:text-yellow-500 hover:bg-gray-800 ${activeLink === item.id ? 'bg-gray-800' : ''}`}
+                className={`text-sm font-medium px-3 py-2 rounded-lg transition-colors duration-300 text-gray-300 hover:text-yellow-500 hover:bg-gray-800 ${activeLink === item.id ? 'bg-black' : ''}`}
               >
                 {item.name}
               </motion.a>
