@@ -1,16 +1,215 @@
-<!doctype html>
-<html lang="en" class="w-full">
+<!DOCTYPE html>
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>ZettAI - Soluciones Avanzadas de Inteligencia Artificial | Líder en IA</title>
+    <meta name="title" content="ZettAI - Soluciones Avanzadas de Inteligencia Artificial | Líder en IA">
+    <meta name="description" content="Transformamos empresas con soluciones de IA personalizadas. Automatización, análisis predictivo y machine learning para optimizar tu negocio. Descubre el poder de la IA con ZettAI." />
+    <meta name="keywords" content="inteligencia artificial, IA empresarial, machine learning, automatización, análisis predictivo, transformación digital, ZettAI" />
+    <meta name="author" content="ZettAI" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Añadir estas meta tags adicionales -->
+    <meta name="theme-color" content="#000000" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="ZettAI" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="ZettAI" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://zettai.com/" />
+    <meta property="og:title" content="ZettAI - Soluciones Avanzadas de IA para Empresas" />
+    <meta property="og:description" content="Transformamos empresas con soluciones de IA personalizadas. Automatización, análisis predictivo y machine learning para optimizar tu negocio." />
+    <meta property="og:image" content="https://zettai.com/og-image.jpg" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="ZettAI" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://zettai.com/" />
+    <meta property="twitter:title" content="ZettAI - Soluciones Avanzadas de IA para Empresas" />
+    <meta property="twitter:description" content="Transformamos empresas con soluciones de IA personalizadas. Automatización, análisis predictivo y machine learning para optimizar tu negocio." />
+    <meta property="twitter:image" content="https://zettai.com/twitter-image.jpg" />
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://zettai.com" />
+    
+    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Vite + React + TS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Schema.org markup -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ZettAI",
+        "url": "https://zettai.com",
+        "logo": "https://zettai.com/logo.png",
+        "description": "Soluciones avanzadas de Inteligencia Artificial para empresas",
+        "sameAs": [
+          "https://twitter.com/zettai",
+          "https://linkedin.com/company/zettai",
+          "https://github.com/zettai"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+34-XXX-XXX-XXX",
+          "contactType": "customer service",
+          "availableLanguage": ["Spanish", "English"]
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "ES",
+          "addressLocality": "Madrid",
+          "postalCode": "28001"
+        }
+      }
+    </script>
+
+    <!-- Schema para Servicios -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "@type": "Service",
+            "position": 1,
+            "name": "Machine Learning",
+            "description": "Optimiza tus procesos con algoritmos inteligentes",
+            "provider": {
+              "@type": "Organization",
+              "name": "ZettAI"
+            },
+            "areaServed": "ES"
+          },
+          {
+            "@type": "Service",
+            "position": 2,
+            "name": "Análisis Predictivo",
+            "description": "Toma decisiones basadas en datos precisos",
+            "provider": {
+              "@type": "Organization",
+              "name": "ZettAI"
+            },
+            "areaServed": "ES"
+          },
+          {
+            "@type": "Service",
+            "position": 3,
+            "name": "Automatización IA",
+            "description": "Mejora la eficiencia operativa con IA",
+            "provider": {
+              "@type": "Organization",
+              "name": "ZettAI"
+            },
+            "areaServed": "ES"
+          }
+        ]
+      }
+    </script>
+
+    <!-- Schema para Blog -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Blog ZettAI",
+        "description": "Últimas noticias y artículos sobre Inteligencia Artificial y tecnología",
+        "publisher": {
+          "@type": "Organization",
+          "name": "ZettAI",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://zettai.com/logo.png"
+          }
+        },
+        "blogPost": [
+          {
+            "@type": "BlogPosting",
+            "headline": "El Futuro del Machine Learning",
+            "description": "Descubre las últimas tendencias en Machine Learning y su impacto en la industria",
+            "datePublished": "2024-12-12",
+            "author": {
+              "@type": "Organization",
+              "name": "ZettAI"
+            }
+          }
+        ]
+      }
+    </script>
+
+    <!-- Schema para FAQ -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Qué servicios ofrece ZettAI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ZettAI ofrece servicios de Machine Learning, Análisis Predictivo y Automatización con IA, diseñados para optimizar procesos empresariales y mejorar la toma de decisiones."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo puedo implementar IA en mi empresa?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ofrecemos una consulta inicial gratuita donde evaluamos tus necesidades y te proponemos una solución personalizada basada en IA que mejor se adapte a tu empresa."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <!-- Schema para Breadcrumbs -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Inicio",
+            "item": "https://zettai.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Servicios",
+            "item": "https://zettai.com/servicios"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Machine Learning",
+            "item": "https://zettai.com/servicios/machine-learning"
+          }
+        ]
+      }
+    </script>
   </head>
-  <body class="w-full overflow-x-hidden">
-    <div id="root" class="w-full"></div>
+  <body>
+    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- Preload critical assets -->
+    <link rel="preload" as="image" href="/logo.png">
   </body>
 </html>

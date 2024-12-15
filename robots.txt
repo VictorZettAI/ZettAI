@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Sitemap: https://zettai.com/sitemap.xml
+
+# Optimizado para rastreo de buscadores
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/

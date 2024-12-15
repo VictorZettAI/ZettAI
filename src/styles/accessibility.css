@@ -1,0 +1,86 @@
+/* Mejoras de contraste */
+:root {
+  --color-primary: #f59e0b; /* Amber-500 con mejor contraste */
+  --color-primary-hover: #d97706; /* Amber-600 para hover */
+  --color-text: #f3f4f6; /* Gray-100 para mejor legibilidad */
+  --color-text-secondary: #9ca3af; /* Gray-400 con mejor contraste */
+}
+
+/* Focus styles */
+*:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Skip links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-primary);
+  color: black;
+  padding: 8px;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* High contrast text */
+.high-contrast-text {
+  color: var(--color-text);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+/* Improved button contrast */
+.button-primary {
+  background-color: var(--color-primary);
+  color: black;
+  font-weight: 600;
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* Form field focus states */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus visible polyfill */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+.js-focus-visible .focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

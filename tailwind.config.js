@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import typography from '@tailwindcss/typography';
+import forms from '@tailwindcss/forms';
+
 export default {
   content: [
     "./index.html",
@@ -47,8 +50,23 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'geometric-pattern': 'url("@/assets/patterns/geometric.svg")',
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '65ch',
+            color: 'var(--foreground)',
+            a: {
+              color: 'var(--primary)',
+              '&:hover': {
+                color: 'var(--primary-foreground)',
+              },
+            },
+          },
+        },
       },
     },
   },
-  plugins: [],
+  plugins: [typography, forms],
 }

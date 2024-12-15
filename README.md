@@ -1,50 +1,179 @@
-# React + TypeScript + Vite
+# ZettAI - Plataforma de Soluciones de Inteligencia Artificial
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ZettAI es una plataforma moderna y sofisticada que ofrece soluciones de inteligencia artificial para empresas y desarrolladores. Construida con React, TypeScript y Vite, la plataforma combina un diseño elegante con funcionalidades avanzadas de IA.
 
-Currently, two official plugins are available:
+## Características Principales
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. Interfaz de Usuario Moderna
+- Diseño responsivo y adaptativo
+- Tema oscuro con acentos dorados
+- Efectos visuales de glassmorphism
+- Animaciones fluidas con Framer Motion
+- Navegación suave con scroll behavior
 
-## Expanding the ESLint configuration
+### 2. Secciones Principales
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+#### Inicio
+- Hero section con animaciones
+- Presentación de la empresa
+- Llamadas a la acción principales
 
-- Configure the top-level `parserOptions` property like this:
+#### Servicios
+- Presentación de soluciones de IA
+- Tarjetas interactivas con hover effects
+- Descripciones detalladas de servicios
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+#### Casos de Éxito
+- Showcase de proyectos realizados
+- Testimonios de clientes
+- Métricas y resultados
+
+#### Demo IA
+Demos interactivas de nuestras tecnologías:
+- **Chat Asistente**: IA conversacional basada en GPT
+- **Generador de Imágenes**: Creación de imágenes con IA
+- **Análisis de Texto**: Procesamiento de lenguaje natural
+- **Asistente de Código**: Ayuda en programación
+
+#### Blog
+- Artículos sobre IA y tecnología
+- Sistema de búsqueda integrado
+- Categorización por temas
+- Diseño responsivo para mejor lectura
+
+#### Equipo
+- Perfiles del equipo
+- Experiencia y especialidades
+- Información de contacto
+
+#### Contacto
+- Formulario de contacto
+- Información de la empresa
+- Redes sociales
+- Ubicación
+
+### 3. Características Técnicas
+
+#### Frontend
+- **Framework**: React 18
+- **Lenguaje**: TypeScript
+- **Build Tool**: Vite
+- **Estilos**: TailwindCSS
+- **Animaciones**: Framer Motion
+- **Routing**: React Router
+- **Estado**: Context API
+- **Formularios**: React Hook Form
+
+#### Integración con IA
+- OpenAI API para chat y procesamiento de texto
+- DALL-E para generación de imágenes
+- Modelos personalizados para análisis
+
+#### Optimización
+- Lazy loading de componentes
+- Optimización de imágenes
+- Code splitting
+- SEO optimizado
+
+## Estructura del Proyecto
+
+```
+src/
+├── analytics/      # Análisis y tracking
+├── assets/         # Imágenes y recursos estáticos
+├── components/     # Componentes React
+│   ├── layout/     # Componentes de estructura
+│   ├── sections/   # Secciones principales
+│   └── ui/         # Componentes reutilizables
+├── config/         # Configuraciones
+├── constants/      # Constantes y enums
+├── context/        # Contextos de React
+├── hooks/          # Custom hooks
+├── lib/           # Librerías y utilidades
+├── providers/     # Providers de React
+├── services/      # Servicios y API
+├── store/         # Estado global
+├── styles/        # Estilos globales
+├── types/         # TypeScript types
+└── utils/         # Funciones utilitarias
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Diseño y UI/UX
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Paleta de Colores
+- **Principal**: Negro (#070914)
+- **Acento**: Amber (#F59E0B)
+- **Texto**: Blanco y grises
+- **Gradientes**: Combinaciones de negro y amber
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### Componentes UI
+- Botones con efectos hover
+- Tarjetas con glassmorphism
+- Inputs estilizados
+- Loaders y animaciones
+- Iconos de Lucide
+
+### Características de Diseño
+- Diseño mobile-first
+- Animaciones suaves
+- Transiciones fluidas
+- Efectos de parallax
+- Fondos dinámicos
+
+## Responsive Design
+- Mobile: 320px+
+- Tablet: 768px+
+- Desktop: 1024px+
+- Large Desktop: 1280px+
+
+## Configuración y Desarrollo
+
+### Requisitos Previos
+- Node.js 18+
+- npm o yarn
+- Git
+
+### Instalación
+```bash
+# Clonar el repositorio
+git clone [repo-url]
+
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm run dev
+
+# Construir para producción
+npm run build
 ```
+
+### Variables de Entorno
+```env
+VITE_API_URL=
+VITE_OPENAI_KEY=
+VITE_GA_ID=
+```
+
+## Rendimiento y Optimización
+- Lighthouse score 90+
+- First Contentful Paint < 1.5s
+- Time to Interactive < 3.5s
+- Cumulative Layout Shift < 0.1
+
+## Seguridad
+- HTTPS forzado
+- Headers de seguridad
+- Sanitización de inputs
+- Protección contra XSS
+- Rate limiting en APIs
+
+## Contribución
+Las contribuciones son bienvenidas. Por favor, lee nuestras guías de contribución antes de enviar un PR.
+
+## Licencia
+Este proyecto está bajo la licencia MIT.
+
+---
+
+Desarrollado con ❤️ por el equipo de ZettAI

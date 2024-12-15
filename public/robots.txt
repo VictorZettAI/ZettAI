@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Rutas principales
+Allow: /blog
+Allow: /casos
+Allow: /servicios
+Allow: /contacto
+
+# Archivos y directorios a no indexar
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*?*
+
+# Sitemap
+Sitemap: https://zettai.com/sitemap.xml
+
+# Tiempo de espera entre solicitudes
+Crawl-delay: 10
